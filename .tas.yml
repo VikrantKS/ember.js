@@ -13,4 +13,5 @@ postMerge:
 postRun:
      command:
         - yarn --version
+configFile: "bin/run-tests.js"
 version: 1.0
