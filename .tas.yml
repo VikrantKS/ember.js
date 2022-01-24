@@ -1,0 +1,15 @@
+framework: mocha
+preRun:
+     command:
+        - yarn install
+        - yarn run build
+preMerge:
+  pattern:
+    - "./node-tests/blueprints/**/*-test.js"
+postMerge:
+  pattern: 
+    - "./node-tests/blueprints/**/*-test.js"
+postRun:
+     command:
+        - node --version
+version: 1.0
