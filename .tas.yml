@@ -5,11 +5,11 @@ preRun:
         - yarn run build
 preMerge:
   pattern:
-    - "./node-tests/blueprints/**/*-test.js"
+    - "./node-tests/blueprints/*.js"
 postMerge:
   pattern: 
-    - "./node-tests/blueprints/**/*-test.js"
+    - "./node-tests/blueprints/*.js"
 postRun:
      command:
-        - node --version
+        - yarn --version
 version: 1.0
