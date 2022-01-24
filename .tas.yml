@@ -5,11 +5,11 @@ preRun:
 preMerge:
   pattern:
     - "./node-tests/blueprints/*.js"
-    - "./bin/run-tests.js"
+    - "./packages/ember/tests/reexports_test.js"
 postMerge:
   pattern: 
     - "./node-tests/blueprints/*.js"
-    - "./bin/run-tests.js"
+    - "./packages/ember/tests/reexports_test.js"
 postRun:
      command:
         - yarn --version
