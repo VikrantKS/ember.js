@@ -44,12 +44,13 @@ interface View {
   @param {Object} owner
 */
 export function getRootViews(owner: Owner): View[] {
-  let registry = owner.lookup<Dict<View>>('-view-registry:main')!;
+  let registry = owner.lookup('-view-registry:main') as Dict<View>;
 
   let rootViews: View[] = [];
 
   Object.keys(registry).forEach((id) => {
     let view = registry[id];
+    assert('expected view', view);
 
     if (view.parentView === null) {
       rootViews.push(view);
@@ -118,7 +119,8 @@ const CHILD_VIEW_IDS: WeakMap<View, Set<string>> = new WeakMap();
 */
 export function getChildViews(view: View): View[] {
   let owner = getOwner(view);
-  let registry = owner.lookup<Dict<View>>('-view-registry:main')!;
+  assert('View is unexpectedly missing an owner', owner);
+  let registry = owner.lookup('-view-registry:main') as Dict<View>;
   return collectChildViews(view, registry);
 }
 
@@ -229,7 +231,7 @@ export const elMatches: typeof Element.prototype.matches | undefined =
 
 export function matches(el: Element, selector: string): boolean {
   assert('cannot call `matches` in fastboot mode', elMatches !== undefined);
-  return elMatches!.call(el, selector);
+  return elMatches.call(el, selector);
 }
 
 export function contains(a: Node, b: Node): boolean {

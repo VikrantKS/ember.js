@@ -7,12 +7,12 @@ import {
 
 import { ENV } from '@ember/-internals/environment';
 import { Component, setComponentManager } from '@ember/-internals/glimmer';
-import { EngineInstanceOptions, Owner } from '@ember/-internals/owner';
+import { Owner } from '@ember/-internals/owner';
 import { Route } from '@ember/-internals/routing';
 import Controller from '@ember/controller';
-import { captureRenderTree } from '@ember/debug';
+import { assert, captureRenderTree } from '@ember/debug';
 import Engine from '@ember/engine';
-import EngineInstance from '@ember/engine/instance';
+import EngineInstance, { EngineInstanceOptions } from '@ember/engine/instance';
 import { CapturedRenderNode } from '@glimmer/interfaces';
 import { componentCapabilities, setComponentTemplate } from '@glimmer/manager';
 import { templateOnlyComponent } from '@glimmer/runtime';
@@ -28,7 +28,7 @@ interface CapturedBounds {
 }
 
 function compileTemplate(templateSource: string, options: Partial<EmberPrecompileOptions>) {
-  return compile(templateSource, options) as any;
+  return compile(templateSource, options);
 }
 
 type Expected<T> = T | ((actual: T) => boolean);
@@ -198,7 +198,7 @@ if (ENV._DEBUG_RENDER_TREE) {
             Resolver = ModuleBasedTestResolver;
 
             init() {
-              super.init(...arguments);
+              super.init();
               this.register(
                 'template:application',
                 compileTemplate(
@@ -234,7 +234,7 @@ if (ENV._DEBUG_RENDER_TREE) {
             Resolver = ModuleBasedTestResolver;
 
             init() {
-              super.init(...arguments);
+              super.init();
               this.register(
                 'template:application',
                 compileTemplate(
@@ -579,7 +579,7 @@ if (ENV._DEBUG_RENDER_TREE) {
             Resolver = ModuleBasedTestResolver;
 
             init() {
-              super.init(...arguments);
+              super.init();
               this.register(
                 'template:application',
                 compileTemplate(
@@ -670,7 +670,8 @@ if (ENV._DEBUG_RENDER_TREE) {
         ]);
 
         runTask(() => {
-          let controller = instance!.lookup<Controller>('controller:application')!;
+          let controller = instance!.lookup('controller:application');
+          assert('Expected an instance of controller', controller instanceof Controller);
           controller.set('message', 'World');
         });
 
@@ -716,7 +717,8 @@ if (ENV._DEBUG_RENDER_TREE) {
         ]);
 
         runTask(() => {
-          let controller = instance!.lookup<Controller>('controller:application')!;
+          let controller = instance!.lookup('controller:application');
+          assert('Expected an instance of controller', controller instanceof Controller);
           controller.set('message', undefined);
         });
 
@@ -1448,7 +1450,10 @@ if (ENV._DEBUG_RENDER_TREE) {
           expected = expected.sort(byTypeAndName);
 
           for (let i = 0; i < actual.length; i++) {
-            this.assertRenderNode(actual[i], expected[i], `${actual[i].type}:${actual[i].name}`);
+            let actualVal = actual[i];
+            let expectedVal = expected[i];
+            assert('has actualVal and expectedVal', actualVal && expectedVal);
+            this.assertRenderNode(actualVal, expectedVal, `${actualVal.type}:${actualVal.name}`);
           }
         } else {
           this.assert.deepEqual(actual, [], path);

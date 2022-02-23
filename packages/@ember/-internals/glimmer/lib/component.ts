@@ -708,8 +708,14 @@ const Component = CoreView.extend(
     get _dispatcher(): EventDispatcher | null {
       if (this.__dispatcher === undefined) {
         let owner = getOwner(this);
-        if (owner.lookup<Environment>('-environment:main')!.isInteractive) {
-          this.__dispatcher = owner.lookup<EventDispatcher>('event_dispatcher:main');
+        assert('Component is unexpectedly missing an owner', owner);
+
+        if ((owner.lookup('-environment:main') as Environment)!.isInteractive) {
+          this.__dispatcher = owner.lookup('event_dispatcher:main');
+          assert(
+            'Expected dispatcher to be an EventDispatcher',
+            this.__dispatcher instanceof EventDispatcher
+          );
         } else {
           // In FastBoot we have no EventDispatcher. Set to null to not try again to look it up.
           this.__dispatcher = null;
@@ -787,7 +793,7 @@ const Component = CoreView.extend(
         _element !== null
       );
 
-      let element = _element!;
+      let element = _element;
       let isSVG = element.namespaceURI === Namespace.SVG;
       let { type, normalized } = normalizeProperty(element, name);
 

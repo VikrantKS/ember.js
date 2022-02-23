@@ -1,6 +1,10 @@
 import { expectTypeOf } from 'expect-type';
 
 import EmberObject from '@ember/object';
+import { Owner } from '@ember/-internals/owner';
+
+// Good enough for tests
+let owner = {} as Owner;
 
 expectTypeOf(EmberObject.create()).toEqualTypeOf<EmberObject>();
 
@@ -33,7 +37,7 @@ export class Person extends EmberObject {
   lastName!: string;
   age!: number;
 }
-const p = new Person();
+const p = new Person(owner);
 
 expectTypeOf(p.firstName).toEqualTypeOf<string>();
 
@@ -57,7 +61,7 @@ expectTypeOf(p.toggleProperty('age')).toEqualTypeOf<boolean>();
 expectTypeOf(p.cacheFor('age')).toEqualTypeOf<unknown>();
 
 // get is not preferred for TS and only returns unknown
-let getPropertiesResult = p.getProperties('firstName', 'lastName', 'invalid');
+const getPropertiesResult = p.getProperties('firstName', 'lastName', 'invalid');
 expectTypeOf(getPropertiesResult).toEqualTypeOf<{
   firstName: unknown;
   lastName: unknown;
@@ -69,7 +73,7 @@ getPropertiesResult.unknown;
 expectTypeOf(p.set('firstName', 'Joe')).toEqualTypeOf<string>();
 expectTypeOf(p.set('invalid', 1)).toEqualTypeOf<number>();
 
-let setPropertiesResult = p.setProperties({ firstName: 'Joe', invalid: 1 });
+const setPropertiesResult = p.setProperties({ firstName: 'Joe', invalid: 1 });
 expectTypeOf(setPropertiesResult).toEqualTypeOf<{
   firstName: string;
   invalid: number;
@@ -102,11 +106,14 @@ Person.reopenClass({ fullName: 6 });
 class MyComponent extends EmberObject {
   foo = 'bar';
 
-  constructor() {
-    super();
+  constructor(owner: Owner) {
+    super(owner);
+
     this.addObserver('foo', this, 'fooDidChange');
+
     this.addObserver('foo', this, this.fooDidChange);
     this.removeObserver('foo', this, 'fooDidChange');
+
     this.removeObserver('foo', this, this.fooDidChange);
     const lambda = () => {
       this.fooDidChange(this, 'foo');

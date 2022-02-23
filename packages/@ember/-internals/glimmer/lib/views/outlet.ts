@@ -1,10 +1,12 @@
 import { getOwner, Owner } from '@ember/-internals/owner';
+import { assert } from '@ember/debug';
 import { schedule } from '@ember/runloop';
 import { Template } from '@glimmer/interfaces';
 import { createComputeRef, Reference, updateRef } from '@glimmer/reference';
 import { consumeTag, createTag, dirtyTag } from '@glimmer/validator';
 import { SimpleElement } from '@simple-dom/interface';
 import { OutletDefinitionState } from '../component-managers/outlet';
+import { Renderer } from '../renderer';
 import { OutletState } from '../utils/outlet';
 
 export interface BootEnvironment {
@@ -36,6 +38,7 @@ export default class OutletView {
   static create(options: any): OutletView {
     let { environment: _environment, application: namespace, template: templateFactory } = options;
     let owner = getOwner(options);
+    assert('OutletView is unexpectedly missing an owner', owner);
     let template = templateFactory(owner);
     return new OutletView(_environment, owner, template, namespace);
   }
@@ -93,9 +96,11 @@ export default class OutletView {
       target = selector;
     }
 
-    let renderer = this.owner.lookup('renderer:-dom');
+    let renderer = this.owner.lookup('renderer:-dom') as Renderer;
 
-    schedule('render', renderer, 'appendOutletView', this, target);
+    // SAFETY: It's not clear that this cast is safe.
+    // The types for appendOutletView may be incorrect or this is a potential bug.
+    schedule('render', renderer, 'appendOutletView', this, target as SimpleElement);
   }
 
   rerender(): void {
