@@ -1,15 +1,14 @@
+---
 framework: mocha
 preRun:
      command:
         - yarn install
 preMerge:
   pattern:
-    - "./node-tests/blueprints/*.js"
-#     - "./packages/ember/tests/**/*_test.js"
+    - "./node-tests/blueprints/**/*-test.js"
 postMerge:
   pattern: 
-    - "./node-tests/blueprints/*.js"
-#     - "./packages/ember/tests/**/*_test.js"
+    - "./node-tests/blueprints/**/*-test.js"
 postRun:
      command:
         - yarn --version
