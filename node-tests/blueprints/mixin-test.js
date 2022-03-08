@@ -44,6 +44,8 @@ describe('Blueprint: mixin', function () {
       });
     });
 
+    
+    
     it('mixin foo/bar', function () {
       return emberGenerateDestroy(['mixin', 'foo/bar'], (_file) => {
         expect(_file('app/mixins/foo/bar.js'))
