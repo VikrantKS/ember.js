@@ -219,6 +219,7 @@ describe('Blueprint: controller', function () {
       });
     });
 
+    
     it('controller foo.js --dummy', function () {
       return emberGenerateDestroy(['controller', 'foo.js', '--dummy'], (_file) => {
         expect(_file('tests/dummy/app/controllers/foo.js.js')).to.not.exist;
