@@ -1,5 +1,9 @@
 # Ember Changelog
 
+### v4.3.0-beta.2 (March 1, 2022)
+
+- [#19971](https://github.com/emberjs/ember.js/pull/19971) [BUGFIX] Don't serialize default Query Params on RouterService
+
 ### v4.3.0-beta.1 (February 7, 2022)
 
 No public API changes or bugfixes. 
@@ -3144,7 +3148,7 @@ Clearly, `component-a` has subscribed to `some-other-component`'s `action`. Prev
 * CollectionView context is now its content
 * Various enhancements to bound helpers: adds multiple property support to bound helpers, adds bind-able options hash properties, adds {{unbound}} helper support to render unbound form of helpers.
 * Add App.inject
-* Add Ember.EnumberableUtils.intersection
+* Add Ember.EnumerableUtils.intersection
 * Deprecate Controller#controllerFor in favor of Controller#needs
 * Adds `bubbles` property to Ember.TextField
 * Allow overriding of Ember.Router#handleURL
