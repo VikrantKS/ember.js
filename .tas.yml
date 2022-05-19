@@ -1,5 +1,8 @@
 ---
 postMerge:
+  preRun:
+    command:
+      - yarn install
   subModules:          #Not to be changed
     - name: blueprints-js      
       path : "./"
