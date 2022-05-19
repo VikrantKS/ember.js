@@ -19,7 +19,7 @@ postMerge:
         - "./node-tests/blueprints/**/*-test.js"
         
       framework : mocha
-        
+      runPreRunEveryTime: true
       preRun:
         env:
           EMBER_TYPESCRIPT_BLUEPRINTS: true
@@ -50,7 +50,7 @@ preMerge :
         - "./node-tests/blueprints/**/*-test.js"
         
       framework : mocha
-        
+      runPreRunEveryTime: true
       preRun:
         env:
           EMBER_TYPESCRIPT_BLUEPRINTS: true
