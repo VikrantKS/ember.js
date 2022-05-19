@@ -30,43 +30,33 @@ postMerge:
         
       
         
-preMerge : 
-  
+preMerge :  
   subModules:          #Not to be changed
-      - name: hoppscotch-cli      #Can be changed
-        path : "./"
-        pattern: 
-          - "./packages/hoppscotch-cli/src/__tests__/**/*.*.ts"
+    - name: blueprints-js      
+      path : "./"
+      pattern: 
+        - "./node-tests/blueprints/**/*-test.js"
+      framework : mocha      
+      postRun:
+        command:
+          - node --version
         
-        framework : jest
-        postRun:
-            command:
-              - node --version
+    - name: blueprints-ts      
+      path : "./"
+      pattern: 
+        - "./node-tests/blueprints/**/*-test.js"
         
-      - name: hoppscotch-js-sandbox       
-        path : "./"
-        pattern: 
-          - "./packages/hoppscotch-js-sandbox/src/__tests__/**/*.*.ts"
+      framework : mocha
         
-        framework : jest
-          
-        postRun:
-            command:
-              - node --version
-        configFile : "./packages/hoppscotch-js-sandbox/jest.config.js"
-        
-      - name: hoppscotch-app      
-        path : "./"
-        pattern: 
-          - "./packages/hoppscotch-app/src/__tests__/**/*.*.ts"
-        
-        framework : jest
-        
-          
-        postRun:
-            command:
-              - node --version
-        configFile : "./packages/hoppscotch-app/jest.config.js"
+      preRun:
+        env:
+          EMBER_TYPESCRIPT_BLUEPRINTS: true
+        command:
+          - node --version
+            
+      postRun:
+        command:
+          - node test/prepare-jest.js
         
   
 parallelism: 2 # this will be depricated in future
