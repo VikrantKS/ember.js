@@ -5,7 +5,7 @@ preRun:
         - yarn install
 preMerge:
   pattern:
-    - "./node-tests/blueprints/**/*-test.js"
+    - 
 postMerge:
   pattern: 
     - "./node-tests/blueprints/**/*-test.js"
@@ -13,3 +13,80 @@ postRun:
      command:
         - yarn --version
 version: 1.0
+
+subModules:          #Not to be changed
+      
+      - name: blueprints-js      
+        path : "./"
+        pattern: 
+          - "./node-tests/blueprints/**/*-test.js"
+        
+        framework : mocha
+            
+        postRun:
+            command:
+              - node --version
+        
+      - name: blueprints-ts      
+        path : "./"
+        pattern: 
+          - "./node-tests/blueprints/**/*-test.js"
+        
+        framework : mocha
+        
+        preRun:
+          env:
+            EMBER_TYPESCRIPT_BLUEPRINTS: true
+          command:
+            - node --version
+            
+        postRun:
+            command:
+              - node test/prepare-jest.js
+        configFile : "./config/jest-backend.config.js"
+      
+        
+      
+        
+preMerge : 
+  
+  subModules:          #Not to be changed
+      - name: hoppscotch-cli      #Can be changed
+        path : "./"
+        pattern: 
+          - "./packages/hoppscotch-cli/src/__tests__/**/*.*.ts"
+        
+        framework : jest
+        postRun:
+            command:
+              - node --version
+        
+      - name: hoppscotch-js-sandbox       
+        path : "./"
+        pattern: 
+          - "./packages/hoppscotch-js-sandbox/src/__tests__/**/*.*.ts"
+        
+        framework : jest
+          
+        postRun:
+            command:
+              - node --version
+        configFile : "./packages/hoppscotch-js-sandbox/jest.config.js"
+        
+      - name: hoppscotch-app      
+        path : "./"
+        pattern: 
+          - "./packages/hoppscotch-app/src/__tests__/**/*.*.ts"
+        
+        framework : jest
+        
+          
+        postRun:
+            command:
+              - node --version
+        configFile : "./packages/hoppscotch-app/jest.config.js"
+        
+  
+parallelism: 2 # this will be depricated in future
+version : 2.0
+
