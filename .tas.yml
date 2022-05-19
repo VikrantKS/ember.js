@@ -1,49 +1,31 @@
 ---
-framework: mocha
-preRun:
-     command:
-        - yarn install
-preMerge:
-  pattern:
-    - 
 postMerge:
-  pattern: 
-    - "./node-tests/blueprints/**/*-test.js"
-postRun:
-     command:
-        - yarn --version
-version: 1.0
-
-subModules:          #Not to be changed
-      
-      - name: blueprints-js      
-        path : "./"
-        pattern: 
-          - "./node-tests/blueprints/**/*-test.js"
+  subModules:          #Not to be changed
+    - name: blueprints-js      
+      path : "./"
+      pattern: 
+        - "./node-tests/blueprints/**/*-test.js"
+      framework : mocha      
+      postRun:
+        command:
+          - node --version
         
-        framework : mocha
+    - name: blueprints-ts      
+      path : "./"
+      pattern: 
+        - "./node-tests/blueprints/**/*-test.js"
+        
+      framework : mocha
+        
+      preRun:
+        env:
+          EMBER_TYPESCRIPT_BLUEPRINTS: true
+        command:
+          - node --version
             
-        postRun:
-            command:
-              - node --version
-        
-      - name: blueprints-ts      
-        path : "./"
-        pattern: 
-          - "./node-tests/blueprints/**/*-test.js"
-        
-        framework : mocha
-        
-        preRun:
-          env:
-            EMBER_TYPESCRIPT_BLUEPRINTS: true
-          command:
-            - node --version
-            
-        postRun:
-            command:
-              - node test/prepare-jest.js
-        configFile : "./config/jest-backend.config.js"
+      postRun:
+        command:
+          - node test/prepare-jest.js
       
         
       
