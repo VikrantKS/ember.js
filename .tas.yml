@@ -28,7 +28,7 @@ postMerge:
             
       postRun:
         command:
-          - node test/prepare-jest.js
+          - node --version
       
         
       
@@ -57,9 +57,7 @@ preMerge :
         command:
           - node --version
             
-      postRun:
-        command:
-          - node test/prepare-jest.js
+     
         
   
 parallelism: 2 # this will be depricated in future
